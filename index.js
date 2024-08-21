@@ -2,18 +2,14 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+const routeClient = require("./routes/client/index.route"); //route cuả client
+
 // --------------[khởi tạo pug]-----------------
 app.set("views", "./views");
 app.set("view engine", "pug");
 // ---------------------------------------------
 
-app.get('/', (req, res) => {
-  res.render("client/pages/home/index.pug");
-});
-
-app.get('/product', (req, res) => {
-    res.render('client/pages/products/index.pug')
-});
+routeClient.index(app);
 
 app.listen(port, () => {
     console.log('dang chạy cổng 3000')
