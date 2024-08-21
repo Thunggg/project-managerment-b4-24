@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT;
 
-
+app.use(express.static('public')); // nhúng file tĩnh
 
 const routeClient = require("./routes/client/index.route"); //route cuả client
 
