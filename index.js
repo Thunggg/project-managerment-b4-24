@@ -13,6 +13,11 @@ app.set("views", "./views");
 app.set("view engine", "pug");
 // ---------------------------------------------
 
+// --------------[kết nối database]-----------------
+const database = require("./config/database");
+database.connect();
+// ---------------------------------------------
+
 routeClient.index(app);
 
 app.listen(port, () => {
