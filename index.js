@@ -22,6 +22,10 @@ const database = require("./config/database");
 database.connect();
 // ---------------------------------------------
 
+// --------------[kết nối database]-----------------
+const systemConfig = require("./config/system");
+app.locals.prefixAdmin = systemConfig.prefixAdmin
+// ---------------------------------------------
 
 
 app.listen(port, () => {
