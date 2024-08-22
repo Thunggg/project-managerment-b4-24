@@ -7,6 +7,10 @@ const port = process.env.PORT;
 app.use(express.static('public')); // nhúng file tĩnh
 
 const routeClient = require("./routes/client/index.route"); //route cuả client
+routeClient.index(app);
+
+const routeAdmin = require("./routes/admin/index.route"); //route cuả admin
+routeAdmin.index(app);
 
 // --------------[khởi tạo pug]-----------------
 app.set("views", "./views");
@@ -18,7 +22,7 @@ const database = require("./config/database");
 database.connect();
 // ---------------------------------------------
 
-routeClient.index(app);
+
 
 app.listen(port, () => {
     console.log('dang chạy cổng 3000')
