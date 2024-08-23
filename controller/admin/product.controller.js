@@ -1,5 +1,7 @@
 const Product = require("../../models/product.model");
 
+const paginationHelper = require("../../helpers/pagination.helper");
+
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
     const find = {
@@ -37,20 +39,7 @@ module.exports.index = async (req, res) => {
 // ---------------------------------------------------------------------------  
 
 // ------------------------[phân trang]------------------------
-const pagination = {
-    currentPage: 1,
-    limitItem: 4
-};
-
-if(req.query.page){
-    pagination.currentPage = parseInt(req.query.page);
-}
-
-pagination.skip = (pagination.currentPage - 1) * pagination.limitItem;
-
-const countProducts = await Product.countDocuments(find);
-
-pagination.totalPage = Math.ceil(countProducts / pagination.limitItem);
+const pagination = await paginationHelper(req, find);
 
 // -------------------------------------------------------------- 
     const products = await Product

@@ -50,6 +50,9 @@ if(formSearch){
             url.searchParams.delete("keyword");
         }
 
+        //fix bug chọn quá số trang khi bấm nào các nút status 
+        url.searchParams.set("page", 1);
+
         window.location.href = url;
     });
 }
