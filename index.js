@@ -3,8 +3,11 @@ require('dotenv').config() // file .env
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
+const bodyParser = require('body-parser'); // dùng để chuyển đổi dữ liệu (được gửi từ FE qua phần body) sang js
 
 app.use(express.static('public')); // nhúng file tĩnh
+app.use(bodyParser.json());// dùng để chuyển đổi dữ liệu (được gửi từ FE qua phần body) sang js
+
 
 const routeClient = require("./routes/client/index.route"); //route cuả client
 routeClient.index(app);
