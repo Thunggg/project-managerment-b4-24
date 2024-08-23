@@ -22,6 +22,8 @@ block main
       table.table.table-hover.table-sm
         thead
           tr
+            th
+              input(name="checkAll" type="checkbox")
             th STT
             th Hình ảnh
             th Tiêu đề
@@ -32,6 +34,8 @@ block main
         tbody
           each item, index in products
             tr 
+              td
+                input(name="checkItem" type="checkbox")
               td #{index+1}
               td
                 img(
@@ -45,16 +49,16 @@ block main
               td
                 if(item.status == "active")
                   button(
-                    link=`/${prefixAdmin}/products/change-status/inactive/${item.id}` 
+                    link=`/${prefixAdmin}/products/change-status/inactive/${item.id}`
                     class="badge badge-success"
                     button-change-status
-                    ) Hoạt động
+                  ) Hoạt động
                 else
                   button(
-                    link=`/${prefixAdmin}/products/change-status/active/${item.id}` 
+                    link=`/${prefixAdmin}/products/change-status/active/${item.id}`
                     class="badge badge-danger"
                     button-change-status
-                    ) Dừng hoạt động
+                  ) Dừng hoạt động
               td
                 button(class="btn btn-warning btn-sm") Sửa
                 button(class="btn btn-danger btn-sm ml-1") Xóa

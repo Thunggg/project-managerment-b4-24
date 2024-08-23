@@ -96,3 +96,29 @@ if(listButtonChangeStatus.length > 0){
         });
     });
 }
+
+// ---------------------------------------------[Check item]---------------------------------------------
+const inputCheckAll = document.querySelector("input[name='checkAll']");
+if(inputCheckAll){
+    const listInputCheckItem = document.querySelectorAll("input[name='checkItem']");
+
+    // bắt sự kiện cho nút check all
+    inputCheckAll.addEventListener("click", () => {
+        listInputCheckItem.forEach(button => {
+            button.checked = inputCheckAll.checked;
+        });
+    });
+
+    // bắt sự kiện cho nút check item
+    listInputCheckItem.forEach(button => {
+        button.addEventListener("click", () => {
+            const countButtonItemChecked = document.querySelectorAll("input[name='checkItem']:checked");
+            if(countButtonItemChecked.length == listInputCheckItem.length){
+                inputCheckAll.checked = true;
+            }
+            else{
+                inputCheckAll.checked = false;
+            }
+        });
+    });
+}
