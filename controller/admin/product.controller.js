@@ -36,12 +36,33 @@ module.exports.index = async (req, res) => {
  ];
 // ---------------------------------------------------------------------------  
 
-    const products = await Product.find(find);
+// ------------------------[phân trang]------------------------
+const pagination = {
+    currentPage: 1,
+    limitItem: 4
+};
+
+if(req.query.page){
+    pagination.currentPage = parseInt(req.query.page);
+}
+
+pagination.skip = (pagination.currentPage - 1) * pagination.limitItem;
+
+const countProducts = await Product.countDocuments(find);
+
+pagination.totalPage = Math.ceil(countProducts / pagination.limitItem);
+
+// -------------------------------------------------------------- 
+    const products = await Product
+    .find(find)
+    .limit(pagination.limitItem)
+    .skip(pagination.skip);
 
     res.render('admin/pages/products/index',{
         pageTitle: "trang quản lý sản phẩm",
         products: products,
         keyword: keyword,
-        filterStatus: filterStatus
+        filterStatus: filterStatus,
+        pagination: pagination
     });
 }
