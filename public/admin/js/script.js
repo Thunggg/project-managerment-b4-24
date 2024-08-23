@@ -15,6 +15,10 @@ if(listButtonStatus.length > 0){
                 url.searchParams.delete("status");
             }
 
+            //fix bug chọn quá số trang khi bấm nào các nút status 
+            url.searchParams.set("page", 1);
+            
+
             window.location.href = url.href;
         });
     });
@@ -50,4 +54,23 @@ if(formSearch){
     });
 }
 // -------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------------[Pagination]---------------------------------------------
+const listButtonPagination = document.querySelectorAll("[button-pagination]");
+if(listButtonPagination.length > 0){
+    listButtonPagination.forEach(button => {
+    
+        let url = new URL(window.location.href);
+    
+        button.addEventListener("click", () => {
+            const page = button.getAttribute("button-pagination");
+
+            url.searchParams.set("page", page);
+    
+            window.location.href = url;
+        });
+    });
+}
+
+// ------------------------------------------------------------------------------------------------------
 
