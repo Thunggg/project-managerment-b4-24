@@ -63,11 +63,6 @@ const pagination = await paginationHelper(req, find);
 module.exports.changeStatus = async (req, res) => {
     
     const {id, statusChange} = req.params;
-    
-    const product = await Product.findOne({
-        _id: id,
-        deleted: false
-    });
 
     await Product.updateOne({
         _id: id
@@ -75,6 +70,8 @@ module.exports.changeStatus = async (req, res) => {
         status: statusChange
     });
 
+    req.flash('success', 'Cập nhật trạng thái thành công!');
+    
     res.json({
         code: 200
     });
