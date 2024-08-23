@@ -29,7 +29,6 @@ if(listButtonStatus.length > 0){
     buttonCurrent.classList.add("active");
 }
 
-// -------------------------------------------------------------------------------------------------------
 
 // ---------------------------------------------[form search]---------------------------------------------
 // fix lỗi khi bấm vào các nút button status rồi tìm kiếm thì bị reset lại thanh tìm kiếm
@@ -56,7 +55,6 @@ if(formSearch){
         window.location.href = url;
     });
 }
-// -------------------------------------------------------------------------------------------------------
 
 // ---------------------------------------------[Pagination]---------------------------------------------
 const listButtonPagination = document.querySelectorAll("[button-pagination]");
@@ -75,5 +73,26 @@ if(listButtonPagination.length > 0){
     });
 }
 
-// ------------------------------------------------------------------------------------------------------
 
+// ---------------------------------------------[button change status]---------------------------------------------
+const listButtonChangeStatus = document.querySelectorAll("[button-change-status]");
+if(listButtonChangeStatus.length > 0){
+    listButtonChangeStatus.forEach(button => {
+        button.addEventListener("click", () => {
+            const link = button.getAttribute("link");
+            
+            fetch(link, {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+            .then(res => res.json())
+            .then(data => {
+                if(data.code == 200){
+                    window.location.reload();
+                }
+            })
+        });
+    });
+}
