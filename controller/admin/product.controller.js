@@ -45,7 +45,10 @@ const pagination = await paginationHelper(req, find);
     const products = await Product
     .find(find)
     .limit(pagination.limitItem)
-    .skip(pagination.skip);
+    .skip(pagination.skip)
+    .sort({
+        position: "desc"
+    });
 
     res.render('admin/pages/products/index',{
         pageTitle: "trang quản lý sản phẩm",
@@ -118,6 +121,23 @@ module.exports.deleteItem = async (req, res) => {
   }, {
     deleted: true
   });
+
+    res.json({
+        code: 200
+    });
+}
+
+// [PATCH] /admin/products/change-position/:id
+module.exports.changePosition = async (req, res) => {
+
+    const id = req.params.id;
+    const position = req.body.position;
+
+    await Product.updateOne({
+        _id: id
+    },{
+        position: req.body.position
+    });
 
     res.json({
         code: 200

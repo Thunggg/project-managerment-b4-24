@@ -186,3 +186,27 @@ if(listButtonDelete.length > 0){
     });
 
 }
+
+// ---------------------------------------------[thay đổi vị trí]---------------------------------------------
+const listInputPosition = document.querySelectorAll("input[name='position']");
+listInputPosition.forEach(button => {
+    button.addEventListener("change", () => {
+        const link = button.getAttribute("link");
+        const position = button.value;
+        
+        fetch(link, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                position: position
+            }),
+          })
+        .then(res => res.json())
+        .then(data => {
+            // console.log(data);
+        })
+    });
+});
+// -----------------------------------------------------------------------------------------------------------

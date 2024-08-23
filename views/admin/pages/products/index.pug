@@ -20,7 +20,7 @@ block main
   .card.mb-3
     .card-header Hành động
     .card-body
-      +box-action(`/${prefixAdmin}/products/change-multi`)
+      +box-actions(`/${prefixAdmin}/products/change-multi`)
   
   .card.mb-3
     .card-header Danh sách
@@ -34,6 +34,7 @@ block main
             th Hình ảnh
             th Tiêu đề
             th Giá
+            th Vị trí
             th Trạng thái
             th Hành động
 
@@ -57,6 +58,15 @@ block main
               td #{item.title}
               td #{item.price}$
               td
+                input(
+                  link=`/${prefixAdmin}/products/change-position/${item.id}`
+                  type="number"
+                  name="position"
+                  value=item.position
+                  style="width: 60px"
+                  min="1"
+                )
+              td
                 if(item.status == "active")
                   button(
                     link=`/${prefixAdmin}/products/change-status/inactive/${item.id}`
@@ -73,7 +83,7 @@ block main
                 button(class="btn btn-warning btn-sm") Sửa
                 button(
                   class="btn btn-danger btn-sm ml-1"
-                  button-delete=`/${prefixAdmin}/products/delete/${item.id}`
-                  ) Xóa
+                  button-delete=`/${prefixAdmin}/products/delete/${id}`
+                ) Xóa
 
   +pagination(pagination)
