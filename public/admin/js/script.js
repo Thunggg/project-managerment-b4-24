@@ -173,7 +173,7 @@ if(listButtonDelete.length > 0){
             const id = button.getAttribute("button-delete");
 
             fetch(`/admin/products/delete/${id}`, {
-                method: "DELETE"
+                method: "PATCH"
               })
             .then(res => res.json())
             .then(data => {
