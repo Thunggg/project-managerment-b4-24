@@ -20,7 +20,7 @@ block main
   .card.mb-3
     .card-header Hành động
     .card-body
-      +box-action("/admin/products/change-multi")
+      +box-action(`/${prefixAdmin}/products/change-multi`)
   
   .card.mb-3
     .card-header Danh sách
@@ -71,6 +71,9 @@ block main
                   ) Dừng hoạt động
               td
                 button(class="btn btn-warning btn-sm") Sửa
-                button(class="btn btn-danger btn-sm ml-1") Xóa
+                button(
+                  class="btn btn-danger btn-sm ml-1"
+                  button-delete=item.id
+                  ) Xóa
 
   +pagination(pagination)
