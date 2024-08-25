@@ -3,9 +3,9 @@ const streamifier = require('streamifier') // thư viện đẩy ảnh lên clou
 
 //cài đặt cho cloudiary
 cloudinary.config({ 
-    cloud_name: 'dgbnjk943', 
-    api_key: '758841269621527', 
-    api_secret: 'h-HVwRPqOr_kNWoeo-y1WqbbPm0' // Click 'View API Keys' above to copy your API secret
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.CLOUD_KEY, 
+    api_secret: process.env.CLOUD_SECRET
 });
 
 
