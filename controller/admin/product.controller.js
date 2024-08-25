@@ -170,9 +170,9 @@ module.exports.createPost = async (req, res) => {
     req.body.stock = parseInt(req.body.stock);
 
     
-    if(req.file.filename){
-        req.body.thumbnail = `/uploads/${req.file.filename}`;
-    }
+    // if(req.file.filename){ do đã up lên cloudiary nên ko cần nữa
+    //     req.body.thumbnail = `/uploads/${req.file.filename}`;
+    // }
     
     if(req.body.position){
         req.body.position = parseInt(req.body.position);
@@ -220,9 +220,9 @@ module.exports.editPatch = async (req, res) => {
     try {
         const id = req.params.id;
 
-        if(req.file && req.file.filename){
-            req.body.thumbnail = `/uploads/${req.file.filename}`;
-        }
+        // if(req.file && req.file.filename){ do đã up lên cloudiary nên ko cần nữa
+        //     req.body.thumbnail = `/uploads/${req.file.filename}`;
+        // }
 
         req.body.price = parseInt(req.body.price);
         req.body.discountPercentage = parseInt(req.body.discountPercentage);
