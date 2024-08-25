@@ -241,3 +241,43 @@ if(uploadImage){
     });
 }
 // END Upload Image
+
+// Sort
+const sort = document.querySelector("[sort]");
+if(sort){
+    const select = sort.querySelector("[sort-select]");
+    
+    let url = new URL(window.location.href);
+
+    select.addEventListener("change", () => {
+        const [sortValue, sortKey] = select.value.split("-");
+        
+        if(sortValue && sortKey){
+            url.searchParams.set("sortValue", sortValue);
+            url.searchParams.set("sortKey", sortKey);
+            window.location.href = url.href;
+        }
+    });
+
+    // Thêm selected mặc định cho option
+    const defaultSortKey = url.searchParams.get("sortKey");
+    const defaultSortValue = url.searchParams.get("sortValue");
+
+    if(defaultSortKey && defaultSortValue){
+        const value = defaultSortValue + "-" + defaultSortKey;
+        const userChoose = document.querySelector(`option[value="${value}"]`);
+        userChoose.selected = true;
+    }
+
+    //nut clear
+    const clear = sort.querySelector("[sort-clear]");
+    clear.addEventListener("click", () => {
+        url.searchParams.delete("sortValue");
+        url.searchParams.delete("sortKey");
+
+        window.location.href = url.href;
+    });
+}
+
+  
+// END Sort
