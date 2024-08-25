@@ -36,8 +36,10 @@ app.use(bodyParser.urlencoded({ extended: false })); // dùng để lấy dữ l
 app.use(bodyParser.json());// dùng để chuyển đổi dữ liệu (được gửi từ FE qua phần body) sang js
 
 // --------------[khởi tạo pug]-----------------
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
+
+app.use(express.static(`${__dirname}/public`)); //chỉ định thư mục gốc để deploy lên vercel
 // ---------------------------------------------
 
 
