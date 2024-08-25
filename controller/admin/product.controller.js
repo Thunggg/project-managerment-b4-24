@@ -63,19 +63,23 @@ const pagination = await paginationHelper(req, find);
 // [PATCH] /admin/products/change-status/:statusChange/:id
 module.exports.changeStatus = async (req, res) => {
     
-    const {id, statusChange} = req.params;
+    try {
+        const {id, statusChange} = req.params;
 
-    await Product.updateOne({
-        _id: id
-    }, {
-        status: statusChange
-    });
+        await Product.updateOne({
+            _id: id
+        }, {
+            status: statusChange
+        });
 
-    req.flash('success', 'Cập nhật trạng thái thành công!');
-    
-    res.json({
-        code: 200
+        req.flash('success', 'Cập nhật trạng thái thành công!');
+        
+        res.json({
+            code: 200
     });
+    } catch (error) {
+        res.redirect(`/${systemConfig.prefixAdmin}/products`);
+    }
 }
 
 // [PATCH] /admin/products/change-multi
@@ -111,37 +115,44 @@ module.exports.changeMulti = async (req, res) => {
 // [PATCH] /admin/products/delete/:id
 module.exports.deleteItem = async (req, res) => {
 
-    const id = req.params.id;
+    try {
+        const id = req.params.id;
 
+        await Product.updateOne({
+            _id: id
+        }, {
+            deleted: true
+        });
 
-    await Product.updateOne({
-    _id: id
-  }, {
-    deleted: true
-  });
+        req.flash('success', 'Xóa sản phẩm thành công!');
 
-  req.flash('success', 'Xóa sản phẩm thành công!');
-
-    res.json({
-        code: 200
-    });
+        res.json({
+            code: 200
+        });
+    } catch (error) {
+        res.redirect(`/${systemConfig.prefixAdmin}/products`);
+    }
 }
 
 // [PATCH] /admin/products/change-position/:id
 module.exports.changePosition = async (req, res) => {
 
-    const id = req.params.id;
-    const position = req.body.position;
+    try {
+        const id = req.params.id;
+        const position = req.body.position;
 
-    await Product.updateOne({
-        _id: id
-    },{
-        position: req.body.position
-    });
+        await Product.updateOne({
+            _id: id
+        },{
+            position: req.body.position
+        });
 
-    res.json({
-        code: 200
-    });
+        res.json({
+            code: 200
+        });
+    } catch (error) {
+        res.redirect(`/${systemConfig.prefixAdmin}/products`);
+    }
 }
 
 // [GET] /admin/products/create
@@ -203,7 +214,6 @@ module.exports.edit = async (req, res) => {
     }
 }
 
-
 // [PATCH] /admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
 
@@ -238,4 +248,30 @@ module.exports.editPatch = async (req, res) => {
     }
 
     res.redirect("back");
+}
+
+// [GET] /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+
+    try {
+        const id = req.params.id;
+        
+        const product = await Product.findOne({
+            _id: id,
+            deleted: false
+        });
+
+        if(product){
+            res.render('admin/pages/products/detail',{
+                pageTitle: "trang chi tiết sản phẩm",
+                product: product
+            });
+        }
+        else{
+            res.redirect(`/${systemConfig.prefixAdmin}/products`);
+        }
+        
+    } catch (error) {
+        res.redirect(`/${systemConfig.prefixAdmin}/products`);
+    }
 }
