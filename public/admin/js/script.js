@@ -213,6 +213,10 @@ listInputPosition.forEach(button => {
 
 // show-alert
 const showAlert = document.querySelector("[show-alert]");
+if(!showAlert.textContent){
+    showAlert.classList.add("hidden"); // nếu thông báo rỗng thì ẩn luôn
+}
+
 if(showAlert) {
   let time = showAlert.getAttribute("show-alert") || 3000;
   time = parseInt(time);

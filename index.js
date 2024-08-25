@@ -6,6 +6,11 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
 const app = express();
+// --------------[định nghĩa thêm nhiều phương thức cho thẻ form]-----------------
+var methodOverride = require('method-override');
+app.use(methodOverride('_method'));
+// -------------------------------------------------------------------------------
+
 
 // --------------[in ra thông báo (express-flash, phải khai báo trước khiu tạo router trong file này)]-----------------
 app.use(cookieParser('HHKALKS'));
