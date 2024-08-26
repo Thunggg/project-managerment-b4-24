@@ -6,6 +6,14 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
 const app = express();
+
+// --------------[tích hợp tinyMCE]-----------------
+var path = require('path');
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+
+// -------------------------------------------------------------------------------
+
+
 // --------------[định nghĩa thêm nhiều phương thức cho thẻ form]-----------------
 var methodOverride = require('method-override');
 app.use(methodOverride('_method'));
