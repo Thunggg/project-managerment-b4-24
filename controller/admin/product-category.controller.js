@@ -15,12 +15,16 @@ module.exports.index = async (req, res) => {
 }
 
 // [GET] /admin/products-category/create
-module.exports.create = (req, res) => {
-    res.render("admin/pages/products-category/create", {
-      pageTitle: "Thêm mới danh mục sản phẩm"
-    });
-  }
+module.exports.create = async (req, res) => {
+  const categories = await ProductCategory.find({
+    deleted: false
+  });
 
+  res.render("admin/pages/products-category/create", {
+    pageTitle: "Thêm mới danh mục sản phẩm",
+    categories: categories
+  });
+}
 // [POST] /admin/products-category/create
 module.exports.createPost = async (req, res) => {
     
@@ -31,6 +35,8 @@ module.exports.createPost = async (req, res) => {
         req.body.position = countCagegory + 1;
       }
     
+      console.log(req.body);
+
       const newCategory = new ProductCategory(req.body);
       await newCategory.save();
     
