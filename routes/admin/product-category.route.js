@@ -3,7 +3,7 @@ const router = express.Router();
 const multer  = require('multer'); // dùng để upload ảnh
 const validate = require("../../validates/admin/product-category.validate");
 const upload = multer();
-const uploadCloud = require("../../middlewares/uploadCloud.middleware");
+const uploadCloud = require("../../middlewares/admin/uploadCloud.middleware");
 const controller = require("../../controller/admin/product-category.controller");
 
 router.get("/", controller.index);
