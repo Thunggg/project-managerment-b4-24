@@ -324,7 +324,6 @@ module.exports.editPatch = async (req, res) => {
 
         try {
             const id = req.params.id;
-    
             // if(req.file && req.file.filename){ do đã up lên cloudiary nên ko cần nữa
             //     req.body.thumbnail = `/uploads/${req.file.filename}`;
             // }
