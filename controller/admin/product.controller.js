@@ -68,6 +68,8 @@ else{
     .sort(sort);
 
     for(item of products){
+        
+        // Tìm người tạo
         if(item.createdBy){
             const account = await Account.findOne({
                 _id: item.createdBy,
@@ -82,6 +84,22 @@ else{
             item.createdByFullName = "";
         }
         item.createdAtFormat = moment(item.createdAt).format("DD/MM/YY HH:mm:ss");
+
+        //Tìm người chỉnh sửa
+        if(item.updatedBy){
+            const account = await Account.findOne({
+                _id: item.updatedBy,
+                deleted: false
+            });
+
+            if(account){
+                item.updatedByFullName = account.fullName;
+            }
+
+        } else{
+            item.updatedByFullName = "";
+        }
+        item.updatedAtFormat = moment(item.updateAt).format("DD/MM/YY HH:mm:ss");
     }
 
 
@@ -321,6 +339,8 @@ module.exports.editPatch = async (req, res) => {
                 req.body.position = countProduct + 1;
             }
     
+            req.body.updatedBy = res.locals.account.id;
+
             await Product.updateOne({
                 _id: id,
                 deleted: false
