@@ -5,6 +5,9 @@ const paginationHelper = require("../../helpers/pagination.helper");
 
 const ProductCategory = require("../../models/product-category.model");
 const createTreeHelper = require("../../helpers/createTree.helper");
+const Account = require("../../models/account.model");
+
+var moment = require('moment'); // thư viện này dùng để format ngày tháng năm (có thể format giờ phút giây)
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -63,6 +66,25 @@ else{
     .limit(pagination.limitItem)
     .skip(pagination.skip)
     .sort(sort);
+
+    for(item of products){
+        if(item.createdBy){
+            const account = await Account.findOne({
+                _id: item.createdBy,
+                deleted: false
+            });
+
+            if(account){
+                item.createdByFullName = account.fullName;
+            }
+
+        } else{
+            item.createdByFullName = "";
+        }
+        item.createdAtFormat = moment(item.createdAt).format("DD/MM/YY HH:mm:ss");
+    }
+
+
 
     res.render('admin/pages/products/index',{
         pageTitle: "trang quản lý sản phẩm",
@@ -227,6 +249,10 @@ module.exports.createPost = async (req, res) => {
             let countProduct = await Product.countDocuments({});
             req.body.position = countProduct + 1;
         }
+
+        req.body.createdBy = res.locals.account.id;
+
+        // console.log(req.body.createdBy);
 
         const newProduct = new Product(req.body);
         await newProduct.save();

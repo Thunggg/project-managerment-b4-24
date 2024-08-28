@@ -17,6 +17,7 @@ block main
           .col-6
             +search(keyword)
 
+
     if(role.permissions.includes("products_edit"))
       .card.mb-3
         .card-header Hành động
@@ -49,8 +50,8 @@ block main
     .card.mb-3
       .card-header Danh sách
       .card-body
-        if(role.permissions.includes("products_create"))
-          div(class="text-right mb-2")
+        div(class="text-right mb-2")
+          if(role.permissions.includes("products_create"))
             a(
               href=`/${prefixAdmin}/products/create`
               class="btn btn-outline-success"
@@ -68,6 +69,7 @@ block main
               if(role.permissions.includes("products_edit"))
                 th Vị trí
                 th Trạng thái
+              th Tạo bởi
               th Hành động
 
           tbody
@@ -112,6 +114,10 @@ block main
                         class="badge badge-danger"
                         button-change-status
                       ) Dừng hoạt động
+                td
+                  div #{item.createdByFullName}
+                  div #{item.createdAtFormat}
+                  //- div 20:22 15/07/2024
                 td
                   a(
                     class="btn btn-info btn-sm"
