@@ -11,7 +11,7 @@ module.exports.requireAuth = async (req, res, next) => {
     const account =await Account.findOne({
         deleted: false,
         token: req.cookies.token
-    }).select("fullName email phone avatar role_id");;
+    }).select("fullName email phone avatar role_id status");;
 
     if(!account){
         res.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
