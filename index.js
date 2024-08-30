@@ -5,6 +5,9 @@ const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
+const http = require('http'); // tích hợp socketio
+const { Server } = require("socket.io"); // tích hợp socketio
+
 const app = express();
 
 // --------------[tích hợp tinyMCE]-----------------
@@ -58,6 +61,15 @@ routeClient.index(app);
 const routeAdmin = require("./routes/admin/index.route"); //route cuả admin
 routeAdmin.index(app);
 
+// ----------------------------------------------[tích hợp socketio]----------------------------------------------
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+    console.log("Có 1 người dùng kết nối", socket.id);
+});
+// ----------------------------------------------------------------------------------------------------------------
+
 app.get("*", (req, res) => {
 
     res.render("client/pages/errors/404", {
@@ -66,6 +78,6 @@ app.get("*", (req, res) => {
 
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log('dang chạy cổng 3000')
 });
