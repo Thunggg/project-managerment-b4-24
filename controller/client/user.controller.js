@@ -127,7 +127,7 @@ module.exports.forgotPasswordPost = async (req, res) => {
     res.redirect(`/user/password/otp?email=${email}`);
 };
 
-// [GET] /user/password/forgot
+// [GET] /user/password/otp
 module.exports.otpPassword = async (req, res) => {
     const email = req.query.email;
 
@@ -138,9 +138,8 @@ module.exports.otpPassword = async (req, res) => {
 };
 
 
-// [POST] /user/password/forgot
+// [POST] /user/password/otp
 module.exports.otpPasswordPost = async (req, res) => {
-    console.log(req.body);
     const result = await ForgotPassword.findOne({
         otp: req.body.otp
     });
@@ -160,9 +159,24 @@ module.exports.otpPasswordPost = async (req, res) => {
     res.redirect("/user/password/reset");
 };
 
-// [GET] /user/password/forgot
+// [GET] /user/password/reset
 module.exports.resetPassword = async (req, res) => {
     res.render("client/pages/user/reset-password", {
-        pageTitle: "Thay đổi mật khẩu"
+      pageTitle: "Đổi mật khẩu mới"
     });
+};
+
+// [PATCH] /user/password/reset
+module.exports.resetPasswordPatch = async (req, res) => {
+    const password = req.body.password;
+    const tokenUser = req.cookies.tokenUser;
+
+    await User.updateOne({
+        tokenUser: tokenUser,
+        deleted: false
+      }, {
+        password: md5(password)
+      });
+
+      res.redirect("/");
 };
