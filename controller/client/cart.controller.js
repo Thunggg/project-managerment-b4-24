@@ -7,7 +7,7 @@ module.exports.index = async (req, res) => {
     const cart = await Cart.findOne({
         _id: req.cookies.cartId
     });
-    
+
     cart.totalPrice = 0; // tổng tiền
 
     if(cart.products.length > 0){
@@ -24,7 +24,6 @@ module.exports.index = async (req, res) => {
             product.totalPrice = productInfo.priceNew * product.quantity;
             cart.totalPrice += product.totalPrice;
         }
-        console.log(cart.totalPrice);
     }
 
     // res.send("OK");
@@ -79,4 +78,24 @@ module.exports.addPost = async (req, res) => {
     }
 
     res.redirect("back");
+}
+
+// [GET] /cart/delete/:productId
+module.exports.delete = async (req, res) => {
+
+    await Cart.updateOne(
+        {
+            _id: req.cookies.cartId
+        },
+        {
+            "$pull": {
+                products: {
+                    productId: req.params.productId
+                }
+            }
+        }
+    );
+
+    res.redirect("back");
+
 }
