@@ -14,3 +14,19 @@ if(listInputQuantity.length > 0){
     });
 }
 // Hết Cập nhật số lượng sản phẩm trong giỏ hàng
+
+// show-alert
+const showAlert = document.querySelector("[show-alert]");
+if(!showAlert.textContent){
+    showAlert.classList.add("hidden"); // nếu thông báo rỗng thì ẩn luôn
+}
+
+if(showAlert) {
+  let time = showAlert.getAttribute("show-alert") || 3000;
+  time = parseInt(time);
+
+  setTimeout(() => {
+    showAlert.classList.add("hidden");
+  }, time);
+}
+// End show-alert
