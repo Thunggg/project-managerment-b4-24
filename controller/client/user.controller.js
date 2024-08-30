@@ -95,7 +95,7 @@ module.exports.forgotPassword = async (req, res) => {
 };
 
 // [POST] /user/password/forgot
-module.exports.forgotPassword = async (req, res) => {
+module.exports.forgotPasswordPost = async (req, res) => {
 
     // Bước 1: kiểm tra xem có tồn tại email hay không nếu tồn tại thì thêm vào database + mã otp
     const email = req.body.email;
@@ -125,4 +125,44 @@ module.exports.forgotPassword = async (req, res) => {
     // Việc 2: Gửi mã OTP qua email của user (Tạm thời coi như xong, làm sau)
 
     res.redirect(`/user/password/otp?email=${email}`);
+};
+
+// [GET] /user/password/forgot
+module.exports.otpPassword = async (req, res) => {
+    const email = req.query.email;
+
+    res.render("client/pages/user/otp-password", {
+        pageTitle: "Xác thực otp",
+        email: email
+    });
+};
+
+
+// [POST] /user/password/forgot
+module.exports.otpPasswordPost = async (req, res) => {
+    console.log(req.body);
+    const result = await ForgotPassword.findOne({
+        otp: req.body.otp
+    });
+
+    if(!result){
+        req.flash("error", "Mã otp không hợp lệ!");
+        res.redirect("back");
+        return;
+    }
+
+    const user = await User.findOne({
+        email: req.body.email
+    });
+
+    res.cookie("tokenUser", user.tokenUser);
+
+    res.redirect("/user/password/reset");
+};
+
+// [GET] /user/password/forgot
+module.exports.resetPassword = async (req, res) => {
+    res.render("client/pages/user/reset-password", {
+        pageTitle: "Thay đổi mật khẩu"
+    });
 };
