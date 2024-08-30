@@ -65,9 +65,7 @@ routeAdmin.index(app);
 const server = http.createServer(app);
 const io = new Server(server);
 
-io.on("connection", (socket) => {
-    console.log("Có 1 người dùng kết nối", socket.id);
-});
+global._io = io; // tạo biến toàn cục
 // ----------------------------------------------------------------------------------------------------------------
 
 app.get("*", (req, res) => {
