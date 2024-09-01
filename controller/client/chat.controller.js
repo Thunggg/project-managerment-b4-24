@@ -6,6 +6,8 @@ module.exports.index = async (req, res) => {
     const userId = res.locals.user.id;  
     const fullName = res.locals.user.fullName;  
 
+    //socket io
+
     _io.once("connection", (socket) => {
         
         // CLIENT_SEND_MESSAGE
@@ -27,7 +29,23 @@ module.exports.index = async (req, res) => {
 
         });
         // END CLIENT_SEND_MESSAGE
+
+        // CLIENT_SEND_TYPING
+        socket.on("CLIENT_SEND_TYPING", (type) =>{
+            socket.broadcast.emit("SERVER_RETURN_TYPING", {
+                userId: userId,
+                fullName: fullName,
+                type: type
+            });
+        });
+        // END CLIENT_SEND_TYPING
+
+
     });
+
+
+
+    //END socket io
 
     const chats = await Chat.find({});
 
