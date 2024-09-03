@@ -1,6 +1,5 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js';
 
-
 // Typing
 const inputChat = document.querySelector(".chat .inner-form input[name='content']");
 var typingTimeOut;
@@ -41,91 +40,87 @@ socket.on("SERVER_RETURN_TYPING", (data) => {
 })
 // End SERVER_RETURN_TYPING
 
-
 // CLIENT_SEND_MESSAGE
-const formChat = document.querySelector("form[class='inner-form']");
-if(formChat){
-    
-    const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-images', {
-      multiple: true,
-      maxFileCount: 6
-    });
-    formChat.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const content = event.target.content.value || "";
-        const images = upload.cachedFileArray;
-        if(content || images.length > 0){
-            socket.emit("CLIENT_SEND_MESSAGE", {
-                content: content,
-                images: images
-            });
-            event.target.content.value = "";
-            upload.resetPreviewPanel();
-            socket.emit("CLIENT_SEND_TYPING", "hidden");
-            // Nếu muốn chỉ có một người bị cuộn xuống dưới khi gửi tin nhắn thì thêm đoạn code này vào đây
-            // phải lấy thẻ body rồi mới vào
-            // body.scrollTop = body.scrollHeight;
-        }
-    });
+const formChat = document.querySelector(".chat .inner-form");
+if(formChat) {
+  const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-images', {
+    multiple: true,
+    maxFileCount: 6
+  });
+
+  formChat.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const content = event.target.content.value || "";
+    const images = upload.cachedFileArray;
+    if(content || images.length > 0) {
+      socket.emit("CLIENT_SEND_MESSAGE", {
+        content: content,
+        images: images
+      });
+      event.target.content.value = "";
+      upload.resetPreviewPanel();
+      socket.emit("CLIENT_SEND_TYPING", "hidden");
+    }
+  })
 }
 // End CLIENT_SEND_MESSAGE
 
 // SERVER_RETURN_MESSAGE
 socket.on("SERVER_RETURN_MESSAGE", (data) => {
-    const myId = document.querySelector("[my-id]").getAttribute("my-id");
-  
-    const div = document.createElement("div");
-    let htmlFullName = "";
-    let htmlContent = "";
-    let htmlImages = "";
+  const myId = document.querySelector("[my-id]").getAttribute("my-id");
 
-    
-    if(data.userId == myId) {
-      div.classList.add("inner-outgoing");
-    } else {
-      div.classList.add("inner-incoming");
-      htmlFullName = `<div class="inner-name">${data.fullName}</div>`;
-    }
+  const div = document.createElement("div");
+  let htmlFullName = "";
+  let htmlContent = "";
+  let htmlImages = "";
 
+  if(data.userId == myId) {
+    div.classList.add("inner-outgoing");
+  } else {
+    div.classList.add("inner-incoming");
+    htmlFullName = `<div class="inner-name">${data.fullName}</div>`;
+  }
 
-    if(data.content) {
-      htmlContent = `<div class="inner-content">${data.content}</div>`;
-    }
-  
-    if(data.images.length > 0) {
-      htmlImages += `
-        <div class="inner-images">
-      `;
-  
-      for (const image of data.images) {
-        htmlImages += `
-          <img src="${image}">
-        `;
-      }
-  
-      htmlImages += `
-        </div>
-      `;
-    }
-  
-    div.innerHTML = `
-      ${htmlFullName}
-      ${htmlContent}
-      ${htmlImages}
+  if(data.content) {
+    htmlContent = `<div class="inner-content">${data.content}</div>`;
+  }
+
+  if(data.images.length > 0) {
+    htmlImages += `
+      <div class="inner-images">
     `;
-  
-    const body = document.querySelector(".chat .inner-body");
-    body.insertBefore(div, elementListTyping);
-  
-    body.scrollTop = body.scrollHeight;
-    new Viewer(div);
-  });
-  // End SERVER_RETURN_MESSAGE
+
+    for (const image of data.images) {
+      htmlImages += `
+        <img src="${image}">
+      `;
+    }
+
+    htmlImages += `
+      </div>
+    `;
+  }
+
+  div.innerHTML = `
+    ${htmlFullName}
+    ${htmlContent}
+    ${htmlImages}
+  `;
+
+  const body = document.querySelector(".chat .inner-body");
+  body.insertBefore(div, elementListTyping);
+
+  body.scrollTop = body.scrollHeight;
+
+  new Viewer(div);
+});
+// End SERVER_RETURN_MESSAGE
 
 // Scroll Chat To Bottom
 const bodyChat = document.querySelector(".chat .inner-body");
 if(bodyChat) {
-    bodyChat.scrollTop = bodyChat.scrollHeight;
+  bodyChat.scrollTop = bodyChat.scrollHeight;
 }
 // End Scroll Chat To Bottom
 
@@ -158,17 +153,3 @@ if(bodyChat) {
   new Viewer(bodyChat);
 }
 // End Preview Image
-
-// SERVER_RETURN_USER_ONLINE
-socket.on("SERVER_RETURN_USER_ONLINE", (data) => {
-  const dataUsersFriend = document.querySelector("[data-users-friend]");
-  if(dataUsersFriend) {
-    const boxUserA = dataUsersFriend.querySelector(`[user-id="${data.userIdA}"]`);
-
-    if(boxUserA) {
-      const boxStatus = boxUserA.querySelector("[status]");
-      boxStatus.setAttribute("status", data.status);
-    }
-  }
-})
-// End SERVER_RETURN_USER_ONLINE

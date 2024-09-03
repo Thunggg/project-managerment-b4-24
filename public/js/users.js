@@ -1,28 +1,18 @@
 // Chức năng gửi yêu cầu
 const listBtnAddFriend = document.querySelectorAll("[btn-add-friend]");
 if(listBtnAddFriend.length > 0) {
-    listBtnAddFriend.forEach(button => {
-        button.addEventListener("click", () => {
-            // Việc 1: Thêm class "add" cho box-user
-            button.closest(".box-user").classList.add("add");
+  listBtnAddFriend.forEach(button => {
+    button.addEventListener("click", () => {
+      // Việc 1: Thêm class "add" cho box-user
+      button.closest(".box-user").classList.add("add");
 
-            // Việc 2: Gửi lên server userIdB
-            const userIdB = button.getAttribute("btn-add-friend");
-            socket.emit("CLIENT_ADD_FRIEND", userIdB);
+      // Việc 2: Gửi lên server userIdB
+      const userIdB = button.getAttribute("btn-add-friend");
+      socket.emit("CLIENT_ADD_FRIEND", userIdB);
     })
   })
 }
 // Hết Chức năng gửi yêu cầu
-
-// SERVER_RETURN_LENGTH_ACCEPT_FRIEND
-socket.on("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", (data) => {
-  const badgeUsersAccept = document.querySelector(`[badge-users-accept="${data.userId}"]`);
-  if(badgeUsersAccept) {
-    badgeUsersAccept.innerHTML = data.length;
-  }
-})
-// End SERVER_RETURN_LENGTH_ACCEPT_FRIEND
-
 
 // Chức năng hủy gửi yêu cầu
 const listBtnCancelFriend = document.querySelectorAll("[btn-cancel-friend]");
@@ -71,6 +61,15 @@ if(listBtnAcceptFriend.length > 0) {
   })
 }
 // Hết Chức năng chấp nhận kết bạn
+
+// SERVER_RETURN_LENGTH_ACCEPT_FRIEND
+socket.on("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", (data) => {
+  const badgeUsersAccept = document.querySelector(`[badge-users-accept="${data.userId}"]`);
+  if(badgeUsersAccept) {
+    badgeUsersAccept.innerHTML = data.length;
+  }
+})
+// End SERVER_RETURN_LENGTH_ACCEPT_FRIEND
 
 // SERVER_RETURN_INFO_ACCEPT_FRIEND
 socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
@@ -171,3 +170,17 @@ socket.on("SERVER_RETURN_ID_ACCEPT_FRIEND", (data) => {
   }
 })
 // End SERVER_RETURN_ID_ACCEPT_FRIEND
+
+// SERVER_RETURN_USER_ONLINE
+socket.on("SERVER_RETURN_USER_ONLINE", (data) => {
+  const dataUsersFriend = document.querySelector("[data-users-friend]");
+  if(dataUsersFriend) {
+    const boxUserA = dataUsersFriend.querySelector(`[user-id="${data.userIdA}"]`);
+
+    if(boxUserA) {
+      const boxStatus = boxUserA.querySelector("[status]");
+      boxStatus.setAttribute("status", data.status);
+    }
+  }
+})
+// End SERVER_RETURN_USER_ONLINE
