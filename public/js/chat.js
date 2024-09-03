@@ -158,3 +158,17 @@ if(bodyChat) {
   new Viewer(bodyChat);
 }
 // End Preview Image
+
+// SERVER_RETURN_USER_ONLINE
+socket.on("SERVER_RETURN_USER_ONLINE", (data) => {
+  const dataUsersFriend = document.querySelector("[data-users-friend]");
+  if(dataUsersFriend) {
+    const boxUserA = dataUsersFriend.querySelector(`[user-id="${data.userIdA}"]`);
+
+    if(boxUserA) {
+      const boxStatus = boxUserA.querySelector("[status]");
+      boxStatus.setAttribute("status", data.status);
+    }
+  }
+})
+// End SERVER_RETURN_USER_ONLINE
