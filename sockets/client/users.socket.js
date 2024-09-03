@@ -49,7 +49,16 @@ module.exports = (req, res) => {
         userId: userIdB
       });
 
+      // Lấy thông của A để trả về cho B
+      const infoA = await User.findOne({
+        _id: userIdA
+      }).select("id fullName avatar");
 
+      socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT_FRIEND", {
+        userIdB: userIdB,
+        infoA: infoA
+      });
+      
     })
     // End Khi A gửi yêu cầu cho B
 
