@@ -14,6 +14,16 @@ if(listBtnAddFriend.length > 0) {
 }
 // Hết Chức năng gửi yêu cầu
 
+// SERVER_RETURN_LENGTH_ACCEPT_FRIEND
+socket.on("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", (data) => {
+  const badgeUsersAccept = document.querySelector(`[badge-users-accept="${data.userId}"]`);
+  if(badgeUsersAccept) {
+    badgeUsersAccept.innerHTML = data.length;
+  }
+})
+// End SERVER_RETURN_LENGTH_ACCEPT_FRIEND
+
+
 // Chức năng hủy gửi yêu cầu
 const listBtnCancelFriend = document.querySelectorAll("[btn-cancel-friend]");
 if(listBtnCancelFriend.length > 0) {
